@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Presentes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-blue-950 text-gray-800">
+<div class="max-w-4xl mx-auto p-4">
+  <h1 class="text-3xl font-bold mb-10 text-center text-white flex items-center justify-center gap-4">
+    <span class="inline-flex items-center justify-center rounded-full bg-white h-12 w-12">
+      <img src="imgs/10351775-removebg-preview.png" alt="Presente" class="h-8 w-8">
+    </span>
+    Lista de Presentes
+    <span class="inline-flex items-center justify-center rounded-full bg-white h-12 w-12">
+      <img src="imgs/10031572-removebg-preview.png" alt="Presente" class="h-8 w-8">
+    </span>
+  </h1>
+  <div id="presentes-list" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+</div>
+<script>
+fetch('presentes.json')
+  .then(response => response.json())
+  .then(data => {
+    const lista = document.getElementById('presentes-list');
+    lista.innerHTML = '';
+    data.forEach(presente => {
+      const precoFormatado = presente.preco
+        ? presente.preco.toLocaleString('pt-BR')
+        : '';
+      lista.innerHTML += `
+        <div class="bg-gray-100 rounded-xl shadow p-4 flex flex-col items-center">
+          <h2 class="text-2xl font-semibold mb-5">${presente.nome}</h2>
+          <img src="${presente.imagem}" alt="${presente.nome}" class="rounded mb-2 w-full h-48 object-contain">
+          <p class="text-gray-700 text-center mb-2">${presente.descricao || ''}</p>
+          <div class="text-center mb-2">
+            <span class="text-gray-500 text-sm">R$</span>
+            <span class="text-2xl font-bold text-gray-800">${precoFormatado}</span>
+            <span class="text-gray-500 text-sm align-top">${presente.preco ? ',00' : ''}</span>
+          </div>
+          <button class="bg-blue-950 hover:bg-blue-800 text-white px-6 py-2 rounded transition">Presentear</button>
+        </div>
+      `;
+    });
+  });
+</script>
+</body>
+</html>
